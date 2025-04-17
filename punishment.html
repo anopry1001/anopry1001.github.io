@@ -23,20 +23,20 @@
 </html>
 
 <script>
-    const message = `New response!\n
-      Time: ${localStorage.getItem('selectedTime') || 'not selected'}\n
-      Punishment: ${localStorage.getItem('punishment') || 'no'}\n
-      Date: ${new Date().toLocaleString()}`;
-  
-    fetch('https://formsubmit.co/ajax/nastya.oprysk@gmail.com', {
-      method: 'POST',
-      headers: { 
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        _subject: 'Survey result',
-        message: message,
-        _captcha: 'false'
+    document.addEventListener('DOMContentLoaded', () => {
+      fetch('https://formsubmit.co/ajax/nastya.oprysk@gmail.com', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          _subject: '💢 Punishment is activated',
+          result: "Spanks",
+          date: new Date().toLocaleString()
+        })
       })
+      .then(() => {
+        localStorage.clear(); // Полная очистка
+        console.log("Наказание зарегистрировано");
+      })
+      .catch(err => console.error("Ошибка:", err));
     });
   </script>

@@ -19,20 +19,27 @@
 </html>
 
 <script>
-    const message = `New response!\n
-      Time: ${localStorage.getItem('selectedTime') || 'not selected'}\n
-      Punishment: ${localStorage.getItem('punishment') || 'no'}\n
-      Date: ${new Date().toLocaleString()}`;
+    // Проверяем данные времени
+    const time = localStorage.getItem('selectedTime');
+    
+    if (!time) {
+      console.log("Time is not selected");
+      return;
+    }
   
     fetch('https://formsubmit.co/ajax/nastya.oprysk@gmail.com', {
       method: 'POST',
-      headers: { 
-        'Content-Type': 'application/json'
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        _subject: 'Survey result',
-        message: message,
-        _captcha: 'false'
+        _subject: '✅ Severance tonight at ',
+        time: time,
+        date: new Date().toLocaleString(),
+        _template: 'table' // Красивый формат
       })
-    });
+    })
+    .then(() => {
+      localStorage.removeItem('selectedTime');
+      console.log("Данные о времени очищены");
+    })
+    .catch(err => console.error("Ошибка:", err));
   </script>

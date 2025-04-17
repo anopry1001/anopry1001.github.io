@@ -12,26 +12,36 @@
 
     <script>
         document.getElementById('punishmentText').textContent = 
-            localStorage.getItem('punishment') || '20 минут массажа';
+            localStorage.getItem('punishment') || '20 minutes of massage';
     </script>
 </body>
 </html>
 
 <script>
-    const message = `New response!\n
-      Time: ${localStorage.getItem('selectedTime') || 'not selected'}\n
-      Punishment: ${localStorage.getItem('punishment') || 'no'}\n
-      Date: ${new Date().toLocaleString()}`;
+    // Получаем данные
+    const punishment = localStorage.getItem('punishment');
+    const time = localStorage.getItem('selectedTime');
   
+    if (!punishment) {
+      console.log("Нет данных о наказании");
+      return;
+    }
+  
+    // Отправка формы
     fetch('https://formsubmit.co/ajax/nastya.oprysk@gmail.com', {
       method: 'POST',
-      headers: { 
-        'Content-Type': 'application/json'
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        _subject: 'Survey result',
-        message: message,
-        _captcha: 'false'
+        _subject: '😊 Nico promised: ',
+        punishment: punishment,
+        time: time || 'not selected',
+        date: new Date().toLocaleString()
       })
-    });
+    })
+    .then(() => {
+      localStorage.removeItem('punishment');
+      localStorage.removeItem('selectedTime');
+      console.log("Данные отправлены и очищены");
+    })
+    .catch(err => console.error("Ошибка:", err));
   </script>
