@@ -70,18 +70,33 @@
 
     <script>
         function showPunishmentOptions() {
+          const time = localStorage.getItem('selectedTime') || '';
+          const params = new URLSearchParams();
+          
+          if (time) {
+            params.append('time', time);
+            // Перенаправляем с параметрами
+            window.location.href = `forgiven.html?${params.toString()}`;
+          } else {
+            // Если времени нет, просто показываем экран
             document.getElementById('confirmScreen').style.display = 'none';
             document.getElementById('punishmentScreen').style.display = 'block';
+          }
         }
-
-        function selectPunishment(option) {
-            localStorage.setItem('punishment', option);
-            if (option === 'punishment') {
-                location.href = 'punishment.html';
-            } else {
-                location.href = 'forgiven.html';
-            }
+      
+        function selectPunishment(btn, option) {
+          // Сохраняем в localStorage для текущей сессии
+          localStorage.setItem('punishment', option);
+          
+          // Формируем URL
+          const time = localStorage.getItem('selectedTime') || '';
+          const params = new URLSearchParams();
+          params.append('punishment', option);
+          if (time) params.append('time', time);
+          
+          // Перенаправляем
+          window.location.href = `forgiven.html?${params.toString()}`;
         }
-    </script>
+      </script>
 </body>
 </html>

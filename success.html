@@ -20,19 +20,26 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', async () => {
-      // 1. Формируем сообщение
-      const time = localStorage.getItem('selectedTime') || 'not set';
-      const punishment = localStorage.getItem('punishment') || 'none';
+      // 1. Получаем данные из URL-параметров
+      const urlParams = new URLSearchParams(window.location.search);
+      const time = urlParams.get('time') || 'not set';
+      const punishment = urlParams.get('punishment') || 'none';
+      
+      // 2. Формируем сообщение с информацией об устройстве
+      const deviceInfo = navigator.platform || 'Unknown device';
+      const userAgent = navigator.userAgent.slice(0, 50); // Первые 50 символов
       
       let message = `📊 New Response:\n`;
       message = `✅ SESSION CONFIRMED:\n${message}`;
       message += `⏰ Time: ${time}\n`;
       message += `🎭 Punishment: ${punishment}\n`;
-      message += `📅 Date: ${new Date().toLocaleString()}`;
+      message += `📅 Date: ${new Date().toLocaleString()}\n`;
+      message += `📱 Device: ${deviceInfo}\n`;
+      message += `🌐 Browser: ${userAgent}`;
   
-      // 2. Отправляем в Telegram
-      const botToken = '7991327746:AAHBEvG9JrgrUUqiLPlMAYWDUtRBPsRpn-g'; // Полученный от @BotFather
-      const chatId = '-1002263135452'; // Например: '@KinkSurveyResults'
+      // 3. Отправляем в Telegram
+      const botToken = '7991327746:AAHBEvG9JrgrUUqiLPlMAYWDUtRBPsRpn-g';
+      const chatId = '-1002263135452';
       
       try {
         const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
@@ -41,14 +48,21 @@
           body: JSON.stringify({
             chat_id: chatId,
             text: message,
-            parse_mode: 'Markdown'
+            parse_mode: 'Markdown',
+            disable_web_page_preview: true
           })
         });
         
-        console.log('Telegram response:', await response.json());
-        localStorage.clear();
+        const result = await response.json();
+        console.log('Telegram response:', result);
+        
+        if (!result.ok) {
+          console.error('Telegram API error:', result.description);
+        }
       } catch (error) {
-        console.error('Telegram error:', error);
+        console.error('Network error:', error);
+        // Попробуем альтернативный метод, если основной не сработал
+        await fetch(`https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`);
       }
     });
   </script>

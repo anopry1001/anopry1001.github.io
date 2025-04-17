@@ -37,10 +37,10 @@
         <h1>Pick a convenient time</h1>
         
         <div class="time-buttons">
-            <button class="time-btn" onclick="selectTime(this, '19:00')">🕖 19:00</button>
-            <button class="time-btn" onclick="selectTime(this, '20:00')">🕖 20:00</button>
-            <button class="time-btn" onclick="selectTime(this, '21:00')">🕖 21:00</button>
-            <button class="time-btn" onclick="selectTime(this, '22:00')">🕖 22:00</button>
+            <button class="time-btn" onclick="selectTime(this, '21:00')" data-time="21:00">21:00</button>
+            <button class="time-btn" onclick="selectTime(this, '22:00')" data-time="22:00">22:00</button>
+            <button class="time-btn" onclick="selectTime(this, '22:30')" data-time="22:30">22:30</button>
+            <button class="time-btn" onclick="selectTime(this, '23:00')" data-time="23:00">23:00</button>
         </div>
         <button id="confirmBtn" class="btn" disabled onclick="confirmTime()">Submit</button>
     </div>
@@ -49,22 +49,30 @@
         let selectedTime = null;
         
         function selectTime(btn, time) {
-            document.querySelectorAll('.time-btn').forEach(b => {
-                b.classList.remove('selected');
-            });
-            
-            btn.classList.add('selected');
-            selectedTime = time;
-            
-            document.getElementById('confirmBtn').disabled = false;
+          // Снимаем выделение со всех кнопок
+          document.querySelectorAll('.time-btn').forEach(b => {
+            b.classList.remove('selected');
+          });
+          
+          // Выделяем выбранную кнопку
+          btn.classList.add('selected');
+          selectedTime = time;
+          
+          // Активируем кнопку подтверждения
+          document.getElementById('confirmBtn').disabled = false;
         }
         
         function confirmTime() {
-            if (selectedTime) {
-                localStorage.setItem('selectedTime', selectedTime);
-                location.href = 'success.html';
-            }
+            if (!selectedTime) return;
+            
+            const btn = document.getElementById('confirmBtn');
+            btn.style.transition = 'all 0.3s';
+            btn.style.transform = 'scale(0.95)';
+            
+            setTimeout(() => {
+                location.href = `success.html?time=${encodeURIComponent(selectedTime)}`;
+            }, 300);
         }
-    </script>
+      </script>
 </body>
 </html>
