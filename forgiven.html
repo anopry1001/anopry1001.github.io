@@ -21,7 +21,7 @@
     const message = `New response!\n
       Time: ${localStorage.getItem('selectedTime') || 'not selected'}\n
       Punishment: ${localStorage.getItem('punishment') || 'no'}\n
-      Дата: ${new Date().toLocaleString()}`;
+      Date: ${new Date().toLocaleString()}`;
   
     fetch('https://formsubmit.co/ajax/nastya.oprysk@gmail.com', {
       method: 'POST',
