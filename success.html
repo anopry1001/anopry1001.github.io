@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Yayyyy!</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Yayyyy! 🎉</h1>
+        <p>Will wait u in Signal at <span id="displayTime"></span></p>
+        <img src="https://i.postimg.cc/Vsg32P5y/c433952f7167f8723d0deb684025bd7d.jpg" alt="Kitty">
+    </div>
+
+    <script>
+        document.getElementById('displayTime').textContent = 
+            localStorage.getItem('selectedTime') || '20:00';
+    </script>
+</body>
+</html>
+
+<script>
+    const message = `New response!\n
+      Time: ${localStorage.getItem('selectedTime') || 'not selected'}\n
+      Punishment: ${localStorage.getItem('punishment') || 'no'}\n
+      Дата: ${new Date().toLocaleString()}`;
+  
+    fetch('https://formsubmit.co/ajax/nastya.oprysk@gmail.com', {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        _subject: 'Survey result',
+        message: message,
+        _captcha: 'false'
+      })
+    });
+  </script>

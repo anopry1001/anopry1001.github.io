@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Punishment!</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .punishment {
+            font-size: 1.5rem;
+            color: #f44336;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Punishment! 😈</h1>
+        <div class="punishment">
+            Silly boi...U shouldn't have clicked here... 
+        </div>
+        <img src="https://i.postimg.cc/1tnQsWd0/card00576-fr.jpg" alt="Spanks">
+    </div>
+</body>
+</html>
+
+<script>
+    const message = `New response!\n
+      Time: ${localStorage.getItem('selectedTime') || 'not selected'}\n
+      Punishment: ${localStorage.getItem('punishment') || 'no'}\n
+      Дата: ${new Date().toLocaleString()}`;
+  
+    fetch('https://formsubmit.co/ajax/nastya.oprysk@gmail.com', {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        _subject: 'Survey result',
+        message: message,
+        _captcha: 'false'
+      })
+    });
+  </script>

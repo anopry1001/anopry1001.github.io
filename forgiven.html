@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Forgiven!</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Okay, I forgive u! 😊</h1>
+        <p>But remember - u promised me: <strong id="punishmentText"></strong></p>
+    </div>
+
+    <script>
+        document.getElementById('punishmentText').textContent = 
+            localStorage.getItem('punishment') || '20 минут массажа';
+    </script>
+</body>
+</html>
+
+<script>
+    const message = `New response!\n
+      Time: ${localStorage.getItem('selectedTime') || 'not selected'}\n
+      Punishment: ${localStorage.getItem('punishment') || 'no'}\n
+      Дата: ${new Date().toLocaleString()}`;
+  
+    fetch('https://formsubmit.co/ajax/nastya.oprysk@gmail.com', {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        _subject: 'Survey result',
+        message: message,
+        _captcha: 'false'
+      })
+    });
+  </script>

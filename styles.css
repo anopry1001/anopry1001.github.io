@@ -1,0 +1,131 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.container {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+h1 {
+    color: #3a4a6d;
+    margin-bottom: 2rem;
+}
+
+.btn {
+    background: #4e7cff;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    margin: 10px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn:hover {
+    background: #3a6bff;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-no {
+    background: #ff6b6b;
+}
+
+.time-option {
+    display: block;
+    margin: 15px auto;
+    width: 80%;
+}
+
+.sad-image {
+    width: 200px;
+    margin-top: 20px;
+}
+
+.hidden {
+    display: none;
+}
+
+.time-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin: 25px 0;
+}
+
+.time-btn {
+    background: #e0e7ff;
+    color: #4e7cff;
+    border: 2px solid #4e7cff;
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.time-btn:hover {
+    background: #4e7cff;
+    color: white;
+    transform: scale(1.05);
+}
+
+.time-btn.selected {
+    background: #4e7cff;
+    color: white;
+    box-shadow: 0 0 0 3px #c3d2ff;
+}
+
+#confirmBtn:disabled {
+    background: #cccccc;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.time-btn {
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.punishment-options {
+    display: none;
+    width: 100%; /* Добавляем */
+    text-align: center; /* Центрируем содержимое */
+}
+
+.punishment-btn {
+    background: #ffebee;
+    color: #f44336;
+    border: 2px solid #f44336;
+    margin: 10px auto; /* auto по бокам для центрирования */
+    padding: 12px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 300px; /* Ограничиваем максимальную ширину */
+    display: block; /* Делаем блочными для margin:auto */
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
