@@ -19,27 +19,26 @@
 </html>
 
 <script>
-    // Проверяем данные времени
-    const time = localStorage.getItem('selectedTime');
-    
-    if (!time) {
-      console.log("Time is not selected");
-      return;
-    }
+    document.addEventListener('DOMContentLoaded', async () => {
+      const time = localStorage.getItem('selectedTime');
+      if (!time) return;
   
-    fetch('https://formsubmit.co/ajax/nastya.oprysk@gmail.com', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        _subject: '✅ Severance tonight at ',
-        time: time,
-        date: new Date().toLocaleString(),
-        _template: 'table' // Красивый формат
-      })
-    })
-    .then(() => {
-      localStorage.removeItem('selectedTime');
-      console.log("Данные о времени очищены");
-    })
-    .catch(err => console.error("Ошибка:", err));
+      try {
+        const response = await fetch('https://corsproxy.io/?https://formsubmit.co/ajax/nastya.oprysk@gmail.com', {
+          method: 'POST',
+          body: JSON.stringify({
+            _subject: '✅ Session Confirmed',
+            time: time,
+            date: new Date().toLocaleString(),
+            _template: 'table'
+          }),
+          headers: { 'Content-Type': 'application/json' }
+        });
+  
+        console.log("Status:", response.status);
+        localStorage.removeItem('selectedTime');
+      } catch (error) {
+        console.error("Submission error:", error);
+      }
+    });
   </script>
