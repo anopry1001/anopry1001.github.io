@@ -73,7 +73,7 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
             // 1. Получаем параметры из URL
             const urlParams = new URLSearchParams(window.location.search);
             const punishment = urlParams.get('punishment') || '20 minutes of massage';
@@ -85,13 +85,35 @@
             const time = urlParams.get('time') || 'not set';
             const device = navigator.platform || 'Unknown device';
             
+            const botToken = '7991327746:AAHBEvG9JrgrUUqiLPlMAYWDUtRBPsRpn-g';
+            const chatId = '-1002263135452';
+
             const message = `😊 REDEMPTION CHOSEN:\n` +
                            `⏰ Time: ${time}\n` +
                            `🎭 Promise: ${punishment}\n` +
                            `📅 Date: ${new Date().toLocaleString()}\n` +
                            `📱 Device: ${device}`;
             
-            // ... (ваш существующий код отправки в Telegram) ...
+            try {
+                // Основной метод отправки
+                let response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: chatId,
+                        text: message,
+                        parse_mode: 'Markdown'
+                    })
+                });
+                
+                // Fallback если не сработало
+                if (!response.ok) {
+                    await fetch(`https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`);
+                }
+                
+            } catch (error) {
+                console.error('Telegram error:', error);
+            }
         });
     </script>
 </body>
