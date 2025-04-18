@@ -73,6 +73,7 @@
 
     <script>
         function showPunishmentOptions() {
+            // Просто показываем экран с выбором наказания, без перенаправления
             document.getElementById('confirmScreen').style.display = 'none';
             document.getElementById('punishmentScreen').style.display = 'block';
         }
@@ -86,9 +87,8 @@
             
             // Перенаправляем в зависимости от выбора
             const targetPage = option === 'punishment' ? 'punishment.html' : 'forgiven.html';
-            window.location.href = `${targetPage}?${params.toString()}`;
             
-            // Можно добавить анимацию перед переходом
+            // Анимация перед переходом
             document.getElementById('punishmentScreen').style.opacity = '0';
             setTimeout(() => {
                 window.location.href = `${targetPage}?${params.toString()}`;

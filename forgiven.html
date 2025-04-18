@@ -3,63 +3,96 @@
 <head>
     <title>Forgiven!</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .promise {
+            font-size: 1.5rem;
+            color: #2e7d32;
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            max-width: 600px;
+            width: 100%;
+            animation: fadeIn 1s;
+        }
+        
+        .image-container {
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+        
+        .promise-image {
+            max-width: 300px;
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            animation: fadeInScale 0.8s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-10px); }
+            40% { transform: translateX(10px); }
+            60% { transform: translateX(-10px); }
+            80% { transform: translateX(10px); }
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <h1>Okay, I forgive u! 😊</h1>
-        <p>But remember - u promised me: <strong id="punishmentText"></strong></p>
+        <div class="promise">
+            But remember - u promised me: <strong id="punishmentText"></strong>
+        </div>
+        
+        <div class="image-container">
+            <img class="promise-image" src="https://i.postimg.cc/x8FwNLbG/61-BJCGItjv-L-AC-UF1000-1000-QL80.jpg" alt="Happy kitty">
+        </div>
+        
+        <button class="btn" onclick="location.href='index.html'">Back to main</button>
     </div>
 
     <script>
-        document.getElementById('punishmentText').textContent = 
-            localStorage.getItem('punishment') || '20 minutes of massage';
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. Получаем параметры из URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const punishment = urlParams.get('punishment') || '20 minutes of massage';
+            
+            // 2. Отображаем наказание
+            document.getElementById('punishmentText').textContent = punishment;
+            
+            // 3. Отправляем в Telegram (оставьте ваш существующий код отправки)
+            const time = urlParams.get('time') || 'not set';
+            const device = navigator.platform || 'Unknown device';
+            
+            const message = `😊 REDEMPTION CHOSEN:\n` +
+                           `⏰ Time: ${time}\n` +
+                           `🎭 Promise: ${punishment}\n` +
+                           `📅 Date: ${new Date().toLocaleString()}\n` +
+                           `📱 Device: ${device}`;
+            
+            // ... (ваш существующий код отправки в Telegram) ...
+        });
     </script>
 </body>
 </html>
-
-<script>
-    document.addEventListener('DOMContentLoaded', async () => {
-      // 1. Получаем данные из URL
-      const urlParams = new URLSearchParams(window.location.search);
-      const time = urlParams.get('time') || 'not set';
-      const punishment = urlParams.get('punishment') || 'none';
-      const device = navigator.platform || 'Unknown device';
-      
-      // 2. Формируем сообщение
-      let message = `😊 REDEMPTION CHOSEN:\n`;
-      message += `📊 New Response:\n`;
-      message += `⏰ Time: ${time}\n`;
-      message += `🎭 Punishment: ${punishment}\n`;
-      message += `📅 Date: ${new Date().toLocaleString()}\n`;
-      message += `📱 Device: ${device}`;
-  
-      // 3. Отправляем в Telegram
-      const botToken = '7991327746:AAHBEvG9JrgrUUqiLPlMAYWDUtRBPsRpn-g';
-      const chatId = '-1002263135452';
-      
-      try {
-        const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            chat_id: chatId,
-            text: message,
-            parse_mode: 'Markdown',
-            disable_notification: false
-          })
-        });
-        
-        const result = await response.json();
-        console.log('Telegram response:', result);
-        
-        if (!result.ok) {
-          // Fallback: пробуем простой GET-запрос
-          await fetch(`https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`);
-        }
-      } catch (error) {
-        console.error('Telegram error:', error);
-        // Дополнительный fallback через proxy
-        await fetch(`https://cors-anywhere.herokuapp.com/https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`);
-      }
-    });
-  </script>
