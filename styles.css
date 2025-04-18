@@ -124,8 +124,15 @@ h1 {
     cursor: pointer;
     transition: all 0.3s;
 }
-
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
+}
+@media (max-width: 600px) {
+    #punishmentImage {
+        max-width: 250px;
+    }
+    .punishment {
+        font-size: 1.2rem;
+    }
 }

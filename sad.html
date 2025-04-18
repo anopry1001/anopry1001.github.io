@@ -4,99 +4,96 @@
     <title>Sure?</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        /* Основные стили для экрана наказаний */
         #punishmentScreen {
             display: none;
-            width: 100%;
-            text-align: center;
+            animation: fadeIn 0.5s;
         }
         
-        /* Стили для кнопок наказаний */
         .punishment-btn {
-            background: #ffebee;
-            color: #f44336;
-            border: 2px solid #f44336;
-            margin: 15px auto; /* Автоматические отступы по бокам для центрирования */
+            background: #e0f7fa;
+            color: #00838f;
+            border: 2px solid #00838f;
+            margin: 15px auto;
             padding: 15px;
             border-radius: 12px;
             width: 80%;
-            max-width: 280px; /* Фиксированная максимальная ширина */
-            display: block; /* Чтобы margin:auto работал */
+            max-width: 300px;
             cursor: pointer;
             transition: all 0.3s;
-            font-size: 1rem;
-            text-align: center;
+            font-size: 1.1rem;
         }
         
         .punishment-btn:hover {
-            background: #f44336;
+            background: #00838f;
             color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(244, 67, 54, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,131,143,0.2);
         }
         
-        /* Особый стиль для кнопки наказания */
         .punishment-btn.special {
-            background: #fff8e1;
-            color: #ff8f00;
-            border-color: #ff8f00;
+            background: #ffebee;
+            color: #c62828;
+            border-color: #c62828;
         }
         
         .punishment-btn.special:hover {
-            background: #ff8f00;
-            color: white;
-            box-shadow: 0 4px 8px rgba(255, 143, 0, 0.3);
+            background: #c62828;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Первый экран (подтверждение) -->
         <div id="confirmScreen">
             <h1>Are you sure it's not? 😢</h1>
             <button class="btn" onclick="showPunishmentOptions()">Yes, I'm sure</button>
             <button class="btn btn-no" onclick="location.href='index.html'">Changed my mind!</button>
         </div>
 
-        <!-- Второй экран (выбор наказания) -->
         <div id="punishmentScreen">
             <h2>Choose how you're gonna make it up to me:</h2>
-            <button class="punishment-btn" onclick="selectPunishment('20 minutes of massage')">💆‍♀️ 20 minutes of massage</button>
-            <button class="punishment-btn" onclick="selectPunishment('white blueberry choco')">🍫 White blueberry choco</button>
-            <button class="punishment-btn" onclick="selectPunishment('30 minutes of scratching my back')">🐾 30 minutes of scratching my back</button>
-            <button class="punishment-btn special" onclick="selectPunishment('punishment')">😈 Punishment</button>
+            <button class="punishment-btn" onclick="selectPunishment('20 minutes of massage')">
+                💆‍♀️ 20 minutes of massage
+            </button>
+            <button class="punishment-btn" onclick="selectPunishment('white blueberry choco')">
+                🍫 White blueberry choco
+            </button>
+            <button class="punishment-btn" onclick="selectPunishment('30 minutes of scratching my back')">
+                🐾 30 minutes of scratching my back
+            </button>
+            <button class="punishment-btn special" onclick="selectPunishment('punishment')">
+                😈 Punishment
+            </button>
         </div>
     </div>
 
     <script>
         function showPunishmentOptions() {
-          const time = localStorage.getItem('selectedTime') || '';
-          const params = new URLSearchParams();
-          
-          if (time) {
-            params.append('time', time);
-            // Перенаправляем с параметрами
-            window.location.href = `forgiven.html?${params.toString()}`;
-          } else {
-            // Если времени нет, просто показываем экран
             document.getElementById('confirmScreen').style.display = 'none';
             document.getElementById('punishmentScreen').style.display = 'block';
-          }
         }
-      
-        function selectPunishment(btn, option) {
-          // Сохраняем в localStorage для текущей сессии
-          localStorage.setItem('punishment', option);
-          
-          // Формируем URL
-          const time = localStorage.getItem('selectedTime') || '';
-          const params = new URLSearchParams();
-          params.append('punishment', option);
-          if (time) params.append('time', time);
-          
-          // Перенаправляем
-          window.location.href = `forgiven.html?${params.toString()}`;
+        
+        function selectPunishment(option) {
+            const time = localStorage.getItem('selectedTime') || '';
+            const params = new URLSearchParams();
+            
+            params.append('punishment', option);
+            if (time) params.append('time', time);
+            
+            // Перенаправляем в зависимости от выбора
+            const targetPage = option === 'punishment' ? 'punishment.html' : 'forgiven.html';
+            window.location.href = `${targetPage}?${params.toString()}`;
+            
+            // Можно добавить анимацию перед переходом
+            document.getElementById('punishmentScreen').style.opacity = '0';
+            setTimeout(() => {
+                window.location.href = `${targetPage}?${params.toString()}`;
+            }, 300);
         }
-      </script>
+    </script>
 </body>
 </html>

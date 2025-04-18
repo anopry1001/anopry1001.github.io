@@ -6,68 +6,104 @@
     <style>
         .punishment {
             font-size: 1.5rem;
-            color: #f44336;
+            color: #c62828;
             margin: 20px 0;
+            padding: 15px;
+            background: #ffebee;
+            border-radius: 10px;
+            animation: shake 0.5s;
+        }
+        
+        .punishment-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            gap: 20px;
+        }
+        
+        #punishmentImage {
+            max-width: 300px;
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            margin: 0 auto;
+            display: block;
+            animation: fadeInScale 0.8s ease-out;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-10px); }
+            40% { transform: translateX(10px); }
+            60% { transform: translateX(-10px); }
+            80% { transform: translateX(10px); }
+        }
+        
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        @media (max-width: 600px) {
+            #punishmentImage {
+                max-width: 250px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Punishment! 😈</h1>
-        <div class="punishment">
-            Silly boi...U shouldn't have clicked here... 
+        <div class="punishment" id="punishmentText">
+            Silly boi...U shouldn't have clicked here...
         </div>
-        <img src="https://i.postimg.cc/1tnQsWd0/card00576-fr.jpg" alt="Spanks">
+        <img id="punishmentImage" src="https://i.postimg.cc/1tnQsWd0/card00576-fr.jpg" alt="Punishment">
+        <button class="btn" onclick="location.href='index.html'">I've learned my lesson!</button>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Получаем параметры
+            const urlParams = new URLSearchParams(window.location.search);
+            const time = urlParams.get('time') || 'not specified';
+            const punishment = 'punishment'; // Всегда punishment для этой страницы
+            
+            // Обновляем текст
+            document.getElementById('punishmentText').textContent = 
+                `You deserve 20 spanks👋🏻! Get your 🍑 ready!`;
+            
+            // Отправка в Telegram
+            const botToken = '7991327746:AAHBEvG9JrgrUUqiLPlMAYWDUtRBPsRpn-g';
+            const chatId = '-1002263135452';
+            
+            const message = `🔥 PUNISHMENT ACTIVATED!\n\n` +
+                           `⏰ Time: ${time}\n` +
+                           `📅 Date: ${new Date().toLocaleString()}\n` +
+                           `🌐 From: ${navigator.userAgent.slice(0, 60)}...`;
+            
+            try {
+                // Основной метод отправки
+                let response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: chatId,
+                        text: message,
+                        parse_mode: 'Markdown'
+                    })
+                });
+                
+                // Fallback если не сработало
+                if (!response.ok) {
+                    await fetch(`https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`);
+                }
+                
+            } catch (error) {
+                console.error('Telegram error:', error);
+            }
+        });
+    </script>
 </body>
 </html>
-
-<script>
-    document.addEventListener('DOMContentLoaded', async () => {
-      // 1. Получаем данные из URL
-      const urlParams = new URLSearchParams(window.location.search);
-      const time = urlParams.get('time') || 'not set';
-      const punishment = urlParams.get('punishment') || 'none';
-      const browser = navigator.userAgent.split(') ')[0] + ')';
-      
-      // 2. Формируем сообщение
-      let message = `🔥 PUNISHMENT ACTIVATED!\n`;
-      message += `📊 New Response:\n`;
-      message += `⏰ Time: ${time}\n`;
-      message += `🎭 Punishment: ${punishment}\n`;
-      message += `📅 Date: ${new Date().toLocaleString()}\n`;
-      message += `🖥️ Browser: ${browser}`;
-  
-      // 3. Улучшенная отправка
-      const botToken = '7991327746:AAHBEvG9JrgrUUqiLPlMAYWDUtRBPsRpn-g';
-      const chatId = '-1002263135452';
-      
-      const sendMessage = async (url) => {
-        try {
-          const response = await fetch(url, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              chat_id: chatId,
-              text: message,
-              parse_mode: 'Markdown'
-            })
-          });
-          return await response.json();
-        } catch (error) {
-          console.error('Attempt failed:', error);
-          return {ok: false};
-        }
-      };
-  
-      // Пробуем разные методы отправки
-      let result = await sendMessage(`https://api.telegram.org/bot${botToken}/sendMessage`);
-      
-      if (!result.ok) {
-        console.log('Trying alternative method...');
-        result = await sendMessage(`https://cors-anywhere.herokuapp.com/https://api.telegram.org/bot${botToken}/sendMessage`);
-      }
-  
-      console.log('Final result:', result);
-    });
-  </script>
